@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link href="css/styles2.css" rel="stylesheet">
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiK85208789LPYu3nz88Gz6g4Kd0hAa7M&libraries=places"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+        <script src="js/webservice.js"></script>
+        <script src="js/utitliy.js"></script>
+        <script src="js/ui.js"></script>
+        
+	</head>
+	<body>
+        <img src="img/menu.svg" id="menu_button">
+        <div id="sidebar">
+            <h1>Connected Cars</h1>
+            <button class="sb_menu_item active">Meine Autos</button>
+        </div>
+        <div id="content">
+            <header>
+                <h1>Meine Autos</h1>
+                <div class="seperator"></div>
+                <input id="search_my_cars" type="text" class="searchbox" placeholder="In meinen Autos suchen">
+                <div id="search_my_cars_results" class="search_results">
+                    <p id="no_results">Keine Ergebnisse</p>
+                </div>
+                <button class="std_button" id="add_car">
+                    <p>NEUES AUTO</p>
+                    <img src="img/plus.svg">
+                </button>
+                <button class="std_button" id="remove_car">
+                    <p>AUTO ENTFERNEN</p>
+                    <img src="img/trash-2.svg">
+                </button>
+                <button class="clean_button" id="user">
+                    <p>Max Mustermann</p>
+                    <img src="img/user.svg">
+                </button>
+            </header>
+            <h1 id="no_cars">Sie bestizen keine Autos.</h1>
+            <div id="std_cells">
+                <div class="std_cell_row">
+                    <div class="std_cell">
+                        <div class="dotted_header">
+                            <h1 id="car_name">Mercedes Benz, C-Klasse</h1>
+                            <div class="dotted_line">
+                                <div class="big_line"></div>
+                                <div class="small_line"></div>
+                                <div class="small_line"></div>
+                                <div class="small_line"></div>
+                            </div>
+                        </div>
+                        <p id="db_data">Auto nicht mit dem System verbunden. Alte Daten wurden geladen. Navigationssystem ist nicht verwendbar.</p>
+                        <div class="imp_data">
+                            <div class="imp_data_item">
+                                <p class="imp_data_value" id="fuellevel">75%</p>
+                                <p class="imp_data_name">TANKFÜLLUNG</p>
+                            </div>
+                            <div class="imp_data_item">
+                                <p class="imp_data_value" id="mileage">1234.24km</p>
+                                <p class="imp_data_name">KILOMETERSTAND</p>
+                            </div>
+                            <div class="imp_data_item">
+                                <p class="imp_data_value" id="nextInspection">23.02.2020</p>
+                                <p class="imp_data_name">NÄCHSTE INSPEKTION</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="std_cell">
+                        <div class="clean_header">
+                            <img src="img/activity.svg">
+                            <h2>STATUS</h2>
+                        </div>
+                        <table class="clean_table" cellspacing="5" id="status">
+                            <colgroup>
+                                <col style="width:30%">
+                                <col style="width:20%">
+                                <col style="width:30%">
+                                <col style="width:20%">
+                            </colgroup>  
+                            <tbody>
+                                <tr>
+                                    <td id="antifreeze">
+                                        Frostschutzmittel
+                                    </td>
+                                    <td class="status_value ok">
+                                        OK
+                                    </td>
+                                    <td id="engine">
+                                        Motor
+                                    </td>
+                                    <td class="status_value ok">
+                                        OK
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="diskWipingWater">
+                                        Scheibenwischwasser
+                                    </td>
+                                    <td class="status_value critical">
+                                        KRITISCH
+                                    </td>
+                                    <td id="brakePads">
+                                        Bremsbelege
+                                    </td>
+                                    <td class="status_value sufficient">
+                                        AUSREICHEND
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="battery">
+                                        Batterie
+                                    </td>
+                                    <td class="status_value ok">
+                                        OK
+                                    </td>
+                                    <td id="brakes">
+                                        Bremsen
+                                    </td>
+                                    <td class="status_value ok">
+                                        OK
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="transmission">
+                                        Getriebe
+                                    </td>
+                                    <td class="status_value ok">
+                                        OK
+                                    </td>
+                                    <td id="coolant">
+                                        Kühlflüssigkeit
+                                    </td>
+                                    <td class="status_value sufficient">
+                                        AUSREICHEND
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="oilLevel">
+                                        Öl-Stand
+                                    </td>
+                                    <td class="status_value ok">
+                                        OK
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="std_cell">
+                        <div class="clean_header">
+                            <img src="img/map-pin.svg">
+                            <h2>POSITION</h2>
+                        </div>
+                        <p id="critcal_fuellevel"></p>
+                        <div id="position_map" class="map">
+                        </div>
+                    </div>
+                </div>
+                <div class="std_cell_row">
+                    <div class="std_cell">
+                        <div class="clean_header">
+                            <img src="img/navigation.svg">
+                            <h2>NAVIGATIONSSYSTEM</h2>
+                        </div>
+                        <div id="new_route_div">
+                            <div class="small_header">
+                                <h3>Neue Route</h3>
+                            </div>
+                            <div class="new_route">
+                                <input id="route_to_input" type="text" class="start_point" placeholder="Start">
+                                <p class="route_to">NACH</p>
+                                <input id="destination_point_input" type="text" class="destination_point" placeholder="Ziel">
+                                <button class="std_button" id="create_route">
+                                    <p>ABSCHICKEN</p>
+                                    <img src="img/send.svg">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="small_header">
+                            <h3>Aktuelle Route</h3>
+                            <p id="current_route_p">München - Stuttgart</p>
+                        </div>
+                        <div id="navigation_map" class="map">
+                        </div>
+                        <div class="small_header">
+                            <h3>Letzte Routen</h3>
+                        </div>
+                        <table class="std_table" cellspacing="0" id="routes">
+                            <colgroup>
+                                <col style="width:70%">
+                                <col style="width:15%">
+                                <col style="width:15%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Start - Ziel
+                                    </th>
+                                    <th>
+                                        Datum
+                                    </th>
+                                    <th>
+                                        Optionen
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        München - Stuttgart
+                                    </td>
+                                    <td>
+                                        13.02.2015
+                                    </td>
+                                    <td class="lt_route_options">
+                                        <button class="std_button">
+                                            <img src="img/send.svg">
+                                        </button>
+                                        <button class="std_button">
+                                            <img src="img/trash-2.svg">
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Satteldorf - Crailsheim
+                                    </td>
+                                    <td>
+                                        23.12.2012
+                                    </td>
+                                    <td class="lt_route_options">
+                                        <button class="std_button">
+                                            <img src="img/send.svg">
+                                        </button>
+                                        <button class="std_button">
+                                            <img src="img/trash-2.svg">
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dialogs">
+            <div class="main_dialog" id="user_dialog">
+                <h1>Dein Account</h1>
+                <p class="validation_message"></p>
+                <input type="text" id="name">
+                <p>NAME</p>
+                <p class="validation_message"></p>
+                <input type="text" id="email" disabled="true">
+                <p>EMAIL</p>
+                <p class="validation_message"></p>
+                <input type="password" id="password">
+                <p>NEUES PASSWORT</p>
+                <button class="std_button plain" id="update_user">
+                    <p>ÜBERNHEMEN</p>
+                </button>
+                <hr>
+                <button class="std_button plain" id="delte_user">
+                    <p>LÖSCHEN</p>
+                </button>
+                <button class="std_button plain" id="logout">
+                    <p>LOG OUT</p>
+                </button>
+                <footer>
+                </footer>
+            </div>
+            <div class="main_dialog" id="binding_dialog">
+                <h1>Auto hinzufügen</h1>
+                <p class="validation_message"></p>
+                <input type="text" id="bindingCode">
+                <p>CODE</p>
+                <button class="std_button plain" id="bind_car">
+                    <p>HINZUFÜGEN</p>
+                </button>
+                <footer>
+                </footer>
+            </div>
+        </div>
+        <script>
+            //Webservice-Stuff
+            
+            
+            
+            function init() {
+                
+                UI.Cars.initialize();
+                
+            }
+            window.onload = init;
+            
+        </script>
+        
+    </body>
+</html>

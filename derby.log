@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Mon Jul 16 16:27:51 CEST 2018:
+Booten von Derby-Version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): Instanz a816c00e-0164-a37d-8a2a-00000b68c438
+für Datenbankverzeichnis F:\Program Files\Eclipse\Workspace\ConnectedCars\database mit Class Loader jdk.internal.loader.ClassLoaders$AppClassLoader@55f3c410
+Geladen aus file:/F:/Program%20Files/Eclipse/Workspace/ConnectedCars/connectedcars_lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=10.0.1+10
+user.dir=F:\Program Files\Eclipse\Workspace\ConnectedCars
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Datenbank-Class Loader wurde gestartet - derby.database.classpath=''

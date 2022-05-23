@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Connected Cars</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link href="css/styles2.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+        <script src="js/webservice.js"></script>
+        <script src="js/utitliy.js"></script>
+    </head>
+    <body>
+        <div class="main_dialog">
+            <h1>LOGIN</h1>
+            <p class="validation_message"></p>
+            <input type="text" id="email">
+            <p>EMAIL</p>
+            <p class="validation_message"></p>
+            <input type="password" id="password">
+            <p>PASSWORT</p>
+            <button class="std_button plain" id="login">
+                <p>LOGIN</p>
+            </button>
+            <footer>
+                <a href="register.html">Registrieren</a>
+            </footer>
+        </div>
+        <script>
+            
+            (function() {
+                
+                Webservice.setOnAuthenticationFailed(function() {
+                    
+                    UTIL.showMessage("Login-Fehler", "Falsches Paswort.", 10000);
+                    
+                });
+                
+                Webservice.setOnException(function(exceptionMsg) {
+                
+                    UTIL.showMessage("Exception", "Ups, da ist wohl was ganz schön schief gegeangen.<br>Exception: " + exceptionMsg, 10000);
+                    
+                });
+                
+                Webservice.addStatusListener(Webservice.Status.NOT_FOUND, function(data) {
+                   
+                    UTIL.showMessage("Login-Fehler", "User wurde bisher noch nicht angelegt, bitte registrieren sie sich vorher.", 10000);
+                    
+                }, "GET");
+                
+            })();
+            
+            $("#login").click(function() {
+                
+                if(UTIL.matchesEmailPattern($("#email")) & UTIL.isPasswordValid($("#password"))) {
+                   
+                    var email = $("#email").val();
+                    var password = $("#password").val();
+                    
+                    Webservice.get(
+                        "auth/login?email=" + email + "&password=" + password, 
+                        function(json) {
+                        
+                            if(json.status == Webservice.Status.OK) {
+                                
+                                Cookies.set("sessionID", json.data);
+                                window.location.href = "index.html";
+                                
+                            } else {
+                                
+                                UTIL.showMessage("Unhandled status", json.status, 10000);
+                                
+                            }
+                            
+                        }
+                    );
+                } 
+            });
+        </script>
+    </body>
+</html> 

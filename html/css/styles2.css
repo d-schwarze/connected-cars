@@ -1,0 +1,788 @@
+* {
+    
+    padding: 0;
+    margin: 0;
+    font-family: 'Bahnschrift';
+    
+}
+
+
+button {
+    
+    cursor: pointer;
+    
+}
+
+#sidebar {
+    
+    position: fixed;
+    left: 0;
+    width: 350px;
+    height: 100%;
+    background-color: #2F465B;
+    display: block;
+    
+}
+
+#menu_button {
+    
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    display: none;
+    cursor: pointer;
+    width: 30px;
+}
+
+#sidebar h1 {
+    
+    text-align: center;
+    color: white;
+    font-weight: 400;
+}
+
+.sb_menu_item {
+    
+    width: 95%;
+    height: 40px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 20px;
+    border-radius: 0px 5px 5px 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+}
+
+.sb_menu_item:hover {
+    
+    background-color: rgba(255,255,255,0.1);
+    
+}
+
+.sb_menu_item.active {
+    
+    background-color: #1A7BD6;
+    
+}
+
+#content {
+    
+    width: calc(100% - 350px);
+    float: right;
+    
+}
+
+#content header {
+    
+    width: calc(100% - 405px);
+    border-bottom: 2px solid #EAEAEA;
+    padding-left: 30px;
+    padding-right: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 30px;
+    display: flex;
+    background-color: white;
+    position: fixed;
+    z-index: 1000;
+}
+
+#content header button {
+    
+    margin-left: 30px;
+    
+}
+
+#content header .clean_button {
+    
+    position: fixed;
+    right: 20px;
+    
+}
+
+input {
+    
+    height: 30px;
+    font-size: 14px;
+    border: 2px solid #EAEAEA;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    outline: none;
+    box-sizing: border-box;
+    
+}
+
+.searchbox {
+    
+    width: 250px;
+   
+}
+
+.searchbox:focus, .searchbox:hover {
+    
+    border: 2px solid #1A7BD6;
+    
+}
+
+.search_results {
+    
+    position: absolute;
+    height: auto;
+    background-color: white;
+    border-radius: 0px 0px 5px 5px;
+    border: 2px solid #1A7BD6;
+    display: none;
+}
+
+.search_result {
+    
+    cursor: pointer;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 30px;
+    
+}
+
+.search_result p {
+    
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+#no_results {
+    
+    text-align: center;
+    padding: 5px;
+    
+}
+
+.search_result:hover, .search_result:focus {
+    
+    background-color: #EAEAEA;
+    
+}
+
+.seperator {
+    
+    height: 100%;
+    margin-left: 30px;
+    margin-right: 30px;
+    width: 2px;
+    background-color: #EAEAEA;
+}
+
+.std_button {
+    
+    background-color: #1A7BD6;
+    color: white;
+    outline: none;
+    border-radius: 5px;
+    height: 30px;
+    border: none;
+    box-sizing: content-box;
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+    box-shadow: 0px 1px 5px 1px lightgrey;
+    
+}
+
+.std_button:hover, .std_button:focus {
+    
+    background-color: #1384EE;
+    
+}
+
+.std_button p {
+    
+    font-size: 16px;
+    float: left;
+    margin: 0;
+    padding: 0;
+    margin-top: 1px;
+    margin-right: 5px;
+    color: white;
+}
+
+.std_button img {
+    
+    float: right;
+    height: 20px;
+    
+}
+
+.clean_button {
+    
+    background-color: transparent;
+    border: none;
+    outline: none;
+    height: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
+
+}
+
+.clean_button p {
+    
+    font-size: 16px;
+    float: left;
+    margin: 0;
+    padding: 0;
+    margin-top: 4px;
+    margin-right: 10px;
+    
+}
+
+.clean_button img {
+    
+    float: right;
+    
+}
+
+#std_cells {
+    
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    
+}
+
+.std_cell_row {
+    
+    width: 100%;
+    float: left;
+    
+}
+
+.std_cell_row .std_cell:first-child {
+    
+    margin-top: 30px;
+    
+}
+
+.std_cell {
+    
+    width: calc(100% - 60px);
+    margin: 30px;
+    
+}
+
+.std_cell .dotted_header {
+    
+    display: inline-block;
+    margin-bottom: 30px;
+    
+}
+
+.dotted_line {
+    
+    width: 100%;
+}
+
+.dotted_line .big_line {
+    
+    width: 70%;
+    float: left;
+    height: 5px;
+    background-color: #1A7BD6;
+    border-radius: 500px;
+}
+
+.dotted_line .small_line {
+    
+    width: 5%;
+    margin-left: 5%;
+    height: 5px;
+    background-color: #1A7BD6;
+    float: left;
+    border-radius: 500px;
+    
+}
+
+.imp_data {
+    
+    width: 100%;
+    display: flex;
+    
+    
+}
+
+.imp_data .imp_data_item:first-child {
+    
+    border-radius: 5px 0 0 5px;
+    border-right: 2px solid white;
+    
+}
+
+.imp_data .imp_data_item:last-child {
+    
+    border-radius: 0 5px 5px 0;
+    border-left: 2px solid white;
+}
+
+.imp_data_item {
+    width: 0;
+    flex-grow: 1;
+    float: left;
+    background-color: #1A7BD6;
+    color: white;
+    height: 75px;
+}
+
+.imp_data_item p {
+    
+    text-align: center;
+    
+}
+
+.imp_data_item .imp_data_value {
+    
+    margin-top: 10px;
+    font-size: 20px;
+    
+}
+
+.imp_data_item .imp_data_name {
+    
+    margin-top: 10px;
+    font-weight: 200;
+    
+}
+
+.std_cell .clean_header {
+    
+    margin-bottom: 15px;
+    
+}
+
+.std_cell .clean_header h2 {
+    
+    font-weight: 500;
+    padding-top: 4px;
+    
+}
+
+.std_cell .clean_header img {
+    
+    float: left;
+    margin-right: 15px;
+    height: 32px;
+}
+
+.clean_table {
+    
+    border: 2px solid #EAEAEA;
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    
+}
+
+.clean_table tbody tr td {
+    
+    font-size: 16px;
+    
+}
+
+.status_value.ok {
+    
+    color: #37CC26;
+    
+}
+
+.status_value.sufficient {
+    
+    color: #EE8B0B;
+    
+}
+
+.status_value.critical {
+    
+    color: #CC2626;
+    
+}
+
+.map {
+    
+    width: 100%;
+    height: 400px;
+    
+}
+
+
+.new_route {
+    
+    display: flex;
+    
+}
+
+.new_route .start_point, .new_route .destination_point {
+    
+    flex-grow: 1;
+    
+}
+
+.new_route .destination_point {
+    
+    margin-right: 45px;
+    
+}
+
+.new_route .route_to, .new_reservation .route_to {
+    
+    color: #1A7BD6;
+    padding-top: 10px;
+    font-size: 14px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.new_reservation .row {
+    
+    width: 100%;
+    height: 50px;
+    
+}
+
+.new_reservation .row:first-child {
+    
+    display: flex;
+    
+}
+
+.new_reservation .row * {
+    
+    float: left;
+    
+}
+
+.new_reservation .start_point, .new_reservation .destination_point {
+    
+    flex-grow: 1;
+}
+
+.new_reservation .std_button {
+    
+    float: right;
+    
+}
+
+.small_header {
+    
+    margin-top: 30px;
+    margin-bottom: 10px;
+    
+}
+
+.small_header h3 {
+    
+    font-weight: 500;
+    font-size: 20px;
+    
+}
+
+.small_header p {
+    
+    margin-top: 5px;
+    font-size: 16px;
+    color: #1A7BD6;
+    
+}
+
+.std_table {
+    
+    width: 100%;
+    
+}
+
+.std_table th {
+    
+    text-align: left;
+    font-weight: 500;
+    color: #1A7BD6;
+    border-left: 1px solid #EAEAEA;
+    border-bottom: 1px solid #EAEAEA;
+    padding-left: 7px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+
+.std_table td {
+    
+    padding-left: 7px;
+    
+}
+
+.std_table tr {
+    
+    height: 36px;
+    
+}
+
+.std_table tr:hover .lt_route_options .std_button {
+    
+    display: block;
+    
+}
+
+.lt_route_options .std_button {
+    
+    height: 24px;
+    max-width: 24px;
+    margin: 4px;
+    margin-right: 10px;
+    margin-left: 0;
+    display: none;
+    float: left;
+    
+}
+
+.lt_route_options .std_button img {
+    
+    height: 16px;
+    width: 16px;
+    
+}
+
+#dialogs {
+    
+    background-color: rgba(130,130,130,0.95);
+    position: fixed;
+    z-index: 1400;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.main_dialog {
+    
+    width: 250px;
+    min-height: 350px;
+    left: calc(50% - 175px);
+    position: absolute;
+    top: calc(50% - 300px);
+    box-shadow: 0px 1px 5px 1px lightgrey;
+    padding: 25px;
+    padding-left: 50px;
+    background-color: white;
+    padding-right: 50px;
+    
+}
+
+.main_dialog h1 {
+    
+    text-align: center;
+    margin-bottom: 5px;
+    
+}
+
+.main_dialog > p {
+    
+    text-align: center;
+    margin-top: 2.5px;
+    color: grey;
+}
+
+.main_dialog .validation_message {
+    
+    height: 20px;
+    padding-top: 5px;
+    color: orangered;
+    
+}
+
+.main_dialog input {
+    
+    width: 100%;
+    font-size: 16px;
+    font-weight: 300;
+    
+}
+
+.main_dialog .std_button.plain {
+    
+    margin-left: calc(50% - 67.5px);
+    width: 120px;
+    margin-top: 15px;
+    
+}
+
+.main_dialog hr {
+    
+    margin-top: 15px;
+    
+}
+
+.main_dialog .std_button.plain p {
+    
+    text-align: center;
+    float: none;
+    margin-right: 0;
+    
+}
+
+.main_dialog footer {
+    
+    bottom: 15px;
+    left: 15px;
+    position: absolute;
+    right: 15px;
+    
+}
+
+.main_dialog footer a {
+    
+    float: left;
+    
+}
+
+.msg_dialog {
+    
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    padding: 10px;
+    min-width: 200px;
+    max-width: 400px;
+    min-height: 50px;
+    border-radius: 5px;
+    z-index: 1500;
+    box-shadow: 0px 1px 5px 1px lightgrey;
+    background-color: white;
+    
+}
+
+.msg_dialog h3, .msg_dialog p {
+    
+    text-align: center;
+    word-wrap: break-word;
+    
+}
+
+.msg_dialog h3 {
+    
+    margin-bottom: 10px;
+    padding-left: 45px;
+    padding-right: 45px;
+    
+}
+
+.msg_dialog img {
+    
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+    opacity: 0.5;
+    
+}
+
+.msg_dialog img:hover, .msg_dialog img:focus {
+    cursor: pointer;
+    opacity: 1;
+    
+}
+
+
+#no_cars {
+    
+    color: #1A7BD6;
+    text-align: center;
+    margin-top: 100px;
+    
+}
+
+#all_cars_list {
+    
+    max-height: 300px;
+    
+}
+
+.car_item {
+    
+    
+    
+}
+
+@media screen and (min-width: 1600px) {
+    
+    #sidebar {
+        
+        display: block !important;
+        
+    }
+    
+}
+
+@media screen and (max-width: 1600px) {
+    
+    #std_cells {
+    
+        display: block;
+
+    }
+    
+    .clean_button p {
+        
+        display: none;
+        
+    }
+    
+    #content header button {
+    
+        margin-left: 10px;
+
+    }
+    
+    #sidebar {
+        
+        display: block;
+        
+    }
+
+    
+}
+
+@media screen and (max-width: 1400px) {
+    
+    .std_button:not(.plain) p {
+        
+        display: none;
+        
+    }
+    
+    #menu_button {
+        
+        display: block;
+        z-index: 1200;
+    }
+    
+    #sidebar {
+        
+        display: none;
+        z-index: 1100;
+        box-shadow: 0px 0px 40px 10px grey;
+        
+    }
+    
+    #content {
+    
+        width: 100%;
+        float: right;
+
+    }
+
+    #content header {
+
+        width: calc(100% - 85px);
+        padding-left: 60px;
+    }
+    
+}

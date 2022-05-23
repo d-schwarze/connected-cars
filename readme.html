@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    </head>
+    <body>
+        <h1>Connected Cars</h1>
+        <h2>Installation</h2>
+        <h3>Benötigete Software</h3>
+        <ul>
+            <li>Java JDK 1.8.0_91 (getestete Java Version)</li>
+            <li>XAMPP mit Apache (oder einen andern Webserver)</li>
+        </ul>
+        <h3>Programm starten</h3>
+        <ol>
+            <li>In dem Order <i>xampp/htdocs</i> von XAMPP alle Dateien aus dem Programmordner <i>ConnectedCars/html</i> einfügen</li>
+            <li>Den Port des Webservers in XAMPP auf 80 setzen (8080 &amp; 8025 werden schon verwendet)</li>
+            <li>In XAMPP den Apache Webserver starten</li>
+            <li>In CMD  zu dem Ordern <i>ConnectedCars</i> navigieren</li>
+            <li>Mit dem Befehl <i>java -jar connectedcars.jar</i> das Programm starten</li>
+            <li>Die lange Warnungs-Meldung kann missachtet werden</li>
+            <li>Wenn das Programm richtig gestartet wurde, sollte <i>Finished initializing</i> ausgegeben werden</li>
+        </ol>
+        <h2>Verwendete Techonologien</h2>
+        <ul>
+            <li>Webservice: Client-Programm Kommunikation</li>
+            <li>Websocket: Simulated Car-Programm Kommunikation</li>
+            <li>Derby Database: Speicherung der Autos (mehr dazu bei SimulatedCar.class)</li>
+        </ul>
+        <h2>Architektur</h2>
+        <p>Das Ziel war es einen möglichst realitätsnahen Service zu entwickeln. Deshalb wurden die Kommunikations-Technologien so gewählt, dass sie zumindest in der Theorie, auch in der Realität genutzt werden könnten.</p>
+        <p>Primär gibts es 3 Schichten</p>
+        <ul>
+            <ol>Client-Schicht</ol>
+            <ol>Server-Schicht</ol>
+            <ol>Simulated Cars-Schicht</ol>
+        </ul>
+        <h3>Client-Schicht</h3>
+        <p>Sie besteht aus den Dateien in dem Ordner<i>ConectedCars/html</i>.</p>
+        <p>Über die Client-Schicht (HTML-Seiten) kann der User mit dem Server kommunizieren und indirekt auch mit den simulierten Autos. Dabei kommuniziert er über den Webservice mit den Serverfunktionen und kann auch über den Server dann direkt auf die Simulated Cars zugreifen.</p>
+        <h3>Server-Schicht</h3>
+        <p>Sie besteht aus fast allen Java-Klassen (ausgenommen <i>de.connectedcars.extern</i>)</p>
+        <p>Primär besitzt sie 3 Technologien. Den Webservice (<i>de.connectedcars.backend.webservice</i>), den Websocket (<i>de.connectedcar.backend.socket</i>) und der Datenbankanbindung via JDBC (alle Manager-Klassen, ausgenommen BindingCodeManager.class und UserSessionManager.class). Der Webservice dient zur Client-Kommunikation und der Websocket zur Kommunikation mit den Simulated Cars. Die Datenbank speichert die Daten der <i>Simulated Cars</i>, damit der Webservice auch Daten bereitstellen kann, wenn die "echten" Autos einmal nicht verbunden sind (in der Realität wäre das eben, wenn das Auto keinen Empfang hat).</p>
+        <h3>Simulated Cars-Schicht</h3>
+        <p>Diese Schicht ist in dem Paket <i>de.connectedcars.extern.cars</i> zu finde. Um die echten Autos zu modellieren werden für jedes "echte" Auto ein Simulated Car erstellt (siehe Konsolen-Befehle). Der Server kann nun über den Websocket (<i>CarSocket.class</i>) direkt mit den "echten" Autos kommunizieren und die direkten Daten der Autos abrufen und sie an den Client weitergeben.</p>
+        <h2>SimulatedCar.class</h2>
+        <p>Sie bildet ein echtes Auto ab und verbinden sicht mit der Server-Schicht über die Klasse CarSocket.class. Wenn das Auto verbunden ist, können über den Websocket Daten ausgetauscht werden. Dafür wurde das Messaging-System entwickelt (de.connectedcar.backend.messaging). Dieses System stellt ein standardisiertes Nachrichtensystem zur verfügung und so können die Daten über die Java-Klassen aus <i>de.connectedcars.messaging.data</i> als JSON-String serialisiert werden und an die Sockets gesendet werden. Über die Klasse <i>MessageDeserializer.class</i> können diese Nachrichten wieder in richte <i>Message.class</i>-Objekte umgeandelt werden. Der <i>MessageType.enum</i> hilft dann, die passende Funktion zu finden und die Daten richtig zu verarbeiten und gegebenfalls eine <i>Message.class</i> zurückzuschicken.</p>
+        <h2>Datenkbank</h2>
+        <p>Alle SimulatedCars.class werden in regelmäßigen Abständen in die Datenbank gespeichert (immer wenn eine Message mit dem MessageType == CAR an den CarSocket zurückgeschickt wurde). Trotzdem sollte der Server (CMD-Befehl -> java -jar connectedcars.jar) nach dem erstellen neues SimulatedCars neugestartet wernd (stop -> CMD-Schlie0en -> CMD öffnen, zum Ordner navigieren und Befehl eingeben). Das dient dazu, die Daten der Autos auch dann abrufbar zu machen, wenn das "echte" Auto einaml nicht verbunden ist. Die Klasse <i>Database.class</i> stellt die Datenbank-Connection bereit und hat eine weiter Funktion um die Datenbank zu reseten/zu erstellen (siehe Konsolen-Befehle).</p>
+        <h2>Webservice-Messaging</h2>
+        <p>Auch der Webservice benutzt ein standardisiertes Messaging-System. Die Klasse <i>ResponseWS.class</i> erstellt über die Funktion build() JSON-Nachrichten, die einen Status besitzen und auch Daten mitführen können. Die <i>webservice.js</i>-Implementierung des ConnectedCars-Webservice erlaubt es dann diese Nachrichten zu verarbeiten und mit Listenern auf die unterschiedlichen StatusTypen (in webservice.js: <i>Webservice.Status...</i>) einzugehen.</p>
+        <h2>Binding Codes</h2>
+        <p>Um ein Simulated Car einem User auch hinzufügen zu können wurde das BindingCode-Sicherheitssystem erstellt. Jedes Simulated Car kann selbst sogenannte BindingCodes erstellen und über dies Codes (im Endeffekt dann ein String) kann ein User im Frontend bei <i>Auto hinzufügen</i> ein Auto an sich "binden"/ein Auto hinzufügen. Diese Codes sind nur 15min verwendbar. Die Klassen findet man in <i>de.connectedcars.backend.binding</i>. Der <i>BindingCodeManager.class</i> managed diese <i>BindingCode.class</i>`s dann. Über den <i>CarSocket.class</i> werden dies BindingCodes an den Server vom Simulated Car geschickt. Der User kann dann einen Code im Frontend eingeben und überprüfen ober der BindingCodeManager diesen beinhaltet, wenn ja, wird das Auto, zu dem der Code gehört, dem User hinzugefügt.</p>
+        <h2>User-Authentifikation</h2>
+        <p>Jeder User kann ein Account anlegen und über diesen dann den kompletten Zugriff auf den Webservice/Simulated Cars bekommen.</p>
+        <p>Dabei kann er sicht in <i>login.html</i> einloggen oder in <i>register.html</i> registrieren. Serverseitig werden die User dann von <i>de.connectedcars.backend.user.UserManager</i> gemanaged.</p>
+        <h2>Javascript-Dateien</h2>
+        <p>Im Ordner <i>ConnectedCars/html/js</i> zu finden.</p>
+        <p>Es gibt 3 JS-Dateien</p>
+        <ul>
+            <li><p>ui.js</p><p>Sie beinhaltet die meiste Logik und wird für die <i>index.html</i>-Datei verwendet um z.B. auf Nutzeringaben zu reagieren oder um die Daten der Autos korrekt im HTML-Code darzustellen.</p></li>
+            <li><p>webserivce.js</p><p>Sie ist eine UTILITY-Datei und beinhaltet eine Webservice-Implementierung. Über die Funktionen <i>get(...)</i> und <i>post(..)</i> kann der Webservice angesteuert werden. Außerdem können bestimmte Status-Typen direkt per Listener abgehört werden.</p></li>
+            <li><p>util.js</p><p>Reine UTILITY-Datei, die von <i>ui.js</i> genutzt wird und z.B. Validation-Fuktionen bereitstellt oder nach Tankstellen sucht.</p></li>
+        </ul>
+        <h2>Konsolen-Programm bedienen</h2>
+        <p>Das Konsolen-Prgramm wird neben dem Webservice und dem Websocket beim ausführen von <i>java -jar connectedcar.jar</i> gestartet (Java-Klasse: <i>ConnectedCars.class</i>).</p>
+        <p>Befehle</p>
+        <ul>
+            <li><p>h</p><p>Gibt die Hilfe aus</p></li>
+            <li><p>stop</p><p>Stoppt die Server-Seite</p></li>
+            <li><p>createdb</p><p>Erstellt die Derby-Datenbank (falls keine vorhanden ist) oder resetet die Tabellen.</p></li>
+            <li><p>createsc:{anzahl}</p><p>Erstellt neue zufallsgenerierte Simulated Cars und verbindet sie mit dem Websocket ({anzahl} -> wieviel neue Autos).</p></li>
+            <li><p>loadsc[:{carid}]</p><p>Läd entweder alle Autos aus der Datenkbank und packt sie in Simulated Cars (createsc) oder läd nur ein Auto (das mit der gleichen Id: createsc:{carid})</p></li>
+            <li><p>createbc:{carid}</p><p>Erstellt einen neuen Binding Code für das angegeben Auto (carid) und gibts den Code in der Konsole aus.</p></li>
+        </ul>
+        <br>
+        <p>Zusatzinfo: Das ganze Ding wurde am 16.07.2018 (1 Tag nach Abgabe) noch einmal neu hochgeladen, da mir die Zeit am 15.07.2018 ausging und die Version vom vorherigen Tag noch nicht "Deploybar" war und die readme nur sehr kurz gefasst war und von Tippfehlern nur so protzte. Falls ich deswegen vom Wettbewerk ausgeschlossen werden sollte, dann sei es so. (Ein Feedback ware tortzdem ganz nett.)</p>
+    </body>
+</html>
